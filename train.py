@@ -29,8 +29,7 @@ parser.add_argument('--decay', type=int, default='2000', help='learning rate dec
 parser.add_argument('--gamma', type=float, default=0.5, help='learning rate decay factor for step decay')
 parser.add_argument('--seed', type=int, default=123456789, help='random seed to use. Default=123456789')
 parser.add_argument('--data_train', type=str, default='train-dataset/LOL_SICE_LOLv2')
-parser.add_argument('--data_test', type=str, default='test-dataset/LOL/raw')
-parser.add_argument('--perceptual_test', type=str, default='./p_amber')
+parser.add_argument('--normal_light', type=str, default='p_amber')
 parser.add_argument('--rgb_range', type=int, default=1, help='maximum value of RGB')
 parser.add_argument('--weights', default='weights/', help='Location to save checkpoint models')
 opt = parser.parse_args()
@@ -155,11 +154,8 @@ def checkpoint(epoch):
 
 print('===> Loading datasets')
 
-test_set = get_eval_set(opt.data_test)
-testing_data_loader = DataLoader(dataset=test_set, num_workers=opt.threads, batch_size=1, shuffle=False)
-
-perceptual_set = get_training_set(opt.perceptual_test)
-perceptual_data_loader = DataLoader(dataset=perceptual_set, num_workers=opt.threads, batch_size=opt.batchSize, shuffle=False)
+normal_light_set = get_training_set(opt.normal_light)
+perceptual_data_loader = DataLoader(dataset=normal_light_set, num_workers=opt.threads, batch_size=opt.batchSize, shuffle=False)
 
 train_set = get_training_set(opt.data_train)
 training_data_loader = DataLoader(dataset=train_set, num_workers=opt.threads, batch_size=opt.batchSize, shuffle=True)
